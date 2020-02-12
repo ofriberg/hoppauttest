@@ -5,61 +5,64 @@ import thunk from "redux-thunk";
 //import reducer from our reducer file
 import reducer from "./reducer";
 //import your action creators used by dispatchers to alter your global state.
-import { fetchData, fetchDataFulfilled, fetchDataRejected } from "./reducer";
+import {
+  fetchData,
+  fetchDataFulfilled,
+  fetchDataRejected,
+  fetchDataPerson,
+  fetchDataFulfilledPerson,
+  fetchDataRejectedPerson
+} from "./reducer";
 import axios from "axios";
 import superagent from "superagent";
 
 const wait = ms => new Promise(r => setTimeout(r, ms));
 //Define your action creators that will be responsible for asynchronouse operatiosn
-export const getPeople = () => {
+export const getBankPerson = () => {
   //IN order to use await your callback must be asynchronous using async keyword.
   return async dispatch => {
     //Then perform your asynchronous operations.
     try {
       //Have it first fetch data from our starwars url.
-      const starWarsPromise = await wait(4000).then(() =>
-        fetch("http://192.168.10.219:4000/test")
+      const promise = await wait(4000).then(() =>
+        fetch("http://192.168.10.219:4000/bankTest?personalNumber=198906010056")
       );
+
       dispatch(fetchData(true));
       //Then use the json method to get json data from api/
-      const people = await starWarsPromise.json();
-      console.log("people-----------", people);
+      const bankPerson = await promise.json();
+      console.log("bank person-----------", bankPerson);
       //Now when the data is retrieved dispatch an action altering redux state.
-      dispatch(fetchDataFulfilled(people));
+      dispatch(fetchDataFulfilled(bankPerson));
     } catch (error) {
-      console.log("Getting People Error---------", error);
+      console.log("Getting bank person Error---------", error);
       dispatch(fetchDataRejected(error));
     }
   };
 };
 
-// export const getPeople = () => {
-//     return dispatch => {
-//         //Dispatch the fetchData action creator before retrieving to set our loading state to true.
-//         dispatch(fetchData(true));
-//         //Then get the data.
-//         axios.get('https://swapi.co/api/people').then(res => {
-//             //Set the results to the people array.
-//             dispatch(fetchDataFulfilled(res.data.results));
-//             //Error handle the promise and set your errorMessage
-//         }).catch(err => dispatch(fetchDataRejected(err)));
-//     }
-// }
+export const getPerson = () => {
+  //IN order to use await your callback must be asynchronous using async keyword.
+  return async dispatch => {
+    //Then perform your asynchronous operations.
+    try {
+      //Have it first fetch data from our starwars url.
+      const promise = await wait(4000).then(() =>
+        fetch("http://192.168.10.219:4000/test")
+      );
 
-// export const getPeople = () => {
-//     return dispatch => {
-//         //Dispatch the fetchData action creator before retrieving to set our loading state to true.
-//         dispatch(fetchData(true));
-//         //Then do a get request the get the err, and response callback, if there's an error dispatch the fetchDataRejected.
-//         superagent.get('https://swapi.co/api/people')
-//         //When the data is retrieved we will invoke the end method.
-//         .end((err, res) => {
-//             //if there is an error use our fetchDataReject
-//             if(err) dispatch(fetchDataRejected(err));
-//             //We will set our loading state when fetching data is successful.
-//             dispatch(fetchDataFulfilled(res.body.results));
-//         })
-//     }
-// }
+      dispatch(fetchDataPerson(true));
+      //Then use the json method to get json data from api/
+      const person = await promise.json();
+      console.log("person-----------", person);
+      //Now when the data is retrieved dispatch an action altering redux state.
+      dispatch(fetchDataFulfilledPerson(person));
+    } catch (error) {
+      console.log("Getting person Error---------", error);
+      dispatch(fetchDataRejectedPerson(error));
+    }
+  };
+};
+
 //Export our store as a default epxport
 export default createStore(reducer, applyMiddleware(thunk));

@@ -14,11 +14,8 @@ router.get("/", async (req, res) => {
       url: `https://randomuser.me/api/`
     }).then(r => r.data);
 
-    const name = `${randomPerson.results[0].name.first} ${randomPerson.results[0].name.last}`;
-    console.log(randomPerson.results);
-    console.log("returning person", name);
-
-    return res.status(200).json(randomPerson.results);
+    console.log("hejhej", randomPerson.results[0]);
+    return res.status(200).json(randomPerson.results[0]);
   });
 });
 

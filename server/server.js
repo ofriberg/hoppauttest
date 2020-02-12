@@ -3,6 +3,7 @@ const express = require("express");
 
 const dotenv = require("dotenv");
 const testRouter = require("./routes/test");
+const bankTestRouter = require("./routes/bankTest");
 
 dotenv.config();
 const app = express();
@@ -10,6 +11,7 @@ const app = express();
 app.use(express.json());
 
 app.use("/test", testRouter);
+app.use("/banktest", bankTestRouter);
 
 const server = http.createServer(app);
 

@@ -1,37 +1,69 @@
 //import React and PureComponent to have the ability to have a shallow comparison of props and state
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 //impo rt your UI from react-native
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Button } from "react-native";
 //import your action creator from store for getting assynchronous operations.
-import { getPeople } from "./redux/store";
+import { getBankPerson, getPerson } from "./redux/store";
 //import connect method connecting your component to have access to redux state and dispatchers
 import { connect } from "react-redux";
 
-class PeopleList extends PureComponent {
-  componentDidMount() {
-    //Dispatch your dispatcher
-    this.props.getPeople();
+class PeopleList extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: "hej"
+    };
   }
+
+  handlePress = () => {
+    this.props.getBankPerson();
+  };
+
+  handlePressPerson = () => {
+    this.props.getPerson();
+  };
   render() {
-    const { people, loading } = this.props;
+    const { bankPerson, person, loading } = this.props;
+    console.log("props");
+    console.log("");
+    console.log("");
+    console.log("");
+    console.log(this.props);
     if (!loading) {
       return (
         <View style={styles.container}>
-          {people.length ? (
-            people.map((person, i) => (
-              <Text
-                key={i}
-              >{`${person.name.title} ${person.name.first} ${person.name.last}`}</Text>
-            ))
+          <Text>{this.state.name || ""}</Text>
+          <Text>{this.state.timer || ""}</Text>
+          <Button onPress={() => this.handlePress()} title='Bank' />
+          {bankPerson && bankPerson.status && bankPerson.status.user ? (
+            <Text>{bankPerson.status.user.name}</Text>
           ) : (
-            <Text>No asdf</Text>
+            <Text>No bank person</Text>
+          )}
+
+          <Button onPress={() => this.handlePressPerson()} title='Person' />
+          {person && person.gender ? (
+            <Text>{person.name.first + " " + person.name.last}</Text>
+          ) : (
+            <Text>No person</Text>
           )}
         </View>
       );
     } else {
       return (
         <View style={styles.container}>
-          <Text style={styles.welcome}>Loading...........</Text>
+          <Button onPress={() => this.handlePress()} title='Fetch stuff' />
+          {bankPerson && bankPerson.status && bankPerson.status.user ? (
+            <Text>{bankPerson.status.user.name}</Text>
+          ) : (
+            <Text>No bank person</Text>
+          )}
+          <Button onPress={() => this.handlePressPerson()} title='Person' />
+          {person && person.gender ? (
+            <Text>{person.name.first + " " + person.name.last}</Text>
+          ) : (
+            <Text>No person</Text>
+          )}
         </View>
       );
     }
@@ -60,13 +92,15 @@ const styles = StyleSheet.create({
 
 //Map the redux state to your props.
 const mapStateToProps = state => ({
-  people: state.people,
+  bankPerson: state.bankPerson,
+  person: state.person,
   loading: state.loading
 });
 
 //Map your action creators to your props.
 const mapDispatchToProps = {
-  getPeople
+  getBankPerson,
+  getPerson
 };
 
 //export your list as a default export
