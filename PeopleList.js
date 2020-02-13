@@ -3,66 +3,44 @@ import React, { Component } from "react";
 //impo rt your UI from react-native
 import { View, Text, StyleSheet, Button } from "react-native";
 //import your action creator from store for getting assynchronous operations.
-import { getBankPerson, getPerson } from "./redux/store";
+import { getPerson } from "./redux/store";
 //import connect method connecting your component to have access to redux state and dispatchers
 import { connect } from "react-redux";
 
 class PeopleList extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      name: "hej"
-    };
   }
 
   handlePress = () => {
-    this.props.getBankPerson();
-  };
-
-  handlePressPerson = () => {
     this.props.getPerson();
   };
   render() {
-    const { bankPerson, person, loading } = this.props;
-    console.log("props");
-    console.log("");
-    console.log("");
-    console.log("");
-    console.log(this.props);
+    const { user, loading } = this.props;
+
+    console.log("user");
+    console.log(user);
+    console.log("useruser", user.user);
+
     if (!loading) {
       return (
         <View style={styles.container}>
-          <Text>{this.state.name || ""}</Text>
-          <Text>{this.state.timer || ""}</Text>
           <Button onPress={() => this.handlePress()} title='Bank' />
-          {bankPerson && bankPerson.status && bankPerson.status.user ? (
-            <Text>{bankPerson.status.user.name}</Text>
+          {user.user && user.user.name ? (
+            <Text>{user.user.name}</Text>
           ) : (
             <Text>No bank person</Text>
-          )}
-
-          <Button onPress={() => this.handlePressPerson()} title='Person' />
-          {person && person.gender ? (
-            <Text>{person.name.first + " " + person.name.last}</Text>
-          ) : (
-            <Text>No person</Text>
           )}
         </View>
       );
     } else {
       return (
         <View style={styles.container}>
-          <Button onPress={() => this.handlePress()} title='Fetch stuff' />
-          {bankPerson && bankPerson.status && bankPerson.status.user ? (
-            <Text>{bankPerson.status.user.name}</Text>
+          <Button onPress={() => this.handlePress()} title='Bank' />
+          {user.user && user.user.name ? (
+            <Text>{user.user.name}</Text>
           ) : (
             <Text>No bank person</Text>
-          )}
-          <Button onPress={() => this.handlePressPerson()} title='Person' />
-          {person && person.gender ? (
-            <Text>{person.name.first + " " + person.name.last}</Text>
-          ) : (
-            <Text>No person</Text>
           )}
         </View>
       );
@@ -92,14 +70,12 @@ const styles = StyleSheet.create({
 
 //Map the redux state to your props.
 const mapStateToProps = state => ({
-  bankPerson: state.bankPerson,
-  person: state.person,
+  user: state.user,
   loading: state.loading
 });
 
 //Map your action creators to your props.
 const mapDispatchToProps = {
-  getBankPerson,
   getPerson
 };
 
