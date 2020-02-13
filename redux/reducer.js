@@ -1,29 +1,21 @@
-//Define your initialState
 const initialState = {
-  //Have a people array responsible for getting the data and setting to the array.
   user: {},
-  //Have the loading state indicate if it's done getting data.
-  loading: true,
-  //Have state for error message for recieving an error.
+  loading: false,
   errorMessage: ""
 };
 
-//Define your action types
-//Initiate the api call
-const GET_PERSON = "GET_PERSON";
-//Gets the players on api call is fullfilled
-const GET_PERSON_FULFILLED = "GET_PERSON_FULFILLED";
-//When there is a error return an errror action type.
-const GET_PERSON_REJECTED = "GET_PERSON_REJECTED";
+// Action types
+const GET_USER = "GET_USER";
+const GET_USER_FULFILLED = "GET_USER_FULFILLED";
+const GET_USER_REJECTED = "GET_USER_REJECTED";
 
-//Define your reducer that will return the initialState by default
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case GET_PERSON:
+    case GET_USER:
       return { ...state, loading: action.payload };
-    case GET_PERSON_FULFILLED:
+    case GET_USER_FULFILLED:
       return { ...state, user: action.payload, loading: action.loading };
-    case GET_PERSON_REJECTED:
+    case GET_USER_REJECTED:
       return {
         ...state,
         errorMessage: action.payload,
@@ -34,36 +26,28 @@ const reducer = (state = initialState, action) => {
   }
 };
 
-//Define your action create that set your loading state.
+// Acction creators
 export const fetchData = bool => {
-  //return a action type and a loading state indicating it is getting data.
   return {
-    type: GET_PERSON,
+    type: GET_USER,
     payload: bool
   };
 };
 
-//Define a action creator to set your loading state to false, and return the data when the promise is resolved
-
 export const fetchDataFulfilled = data => {
-  //Return a action type and a loading to false, and the data.
-
   return {
-    type: GET_PERSON_FULFILLED,
+    type: GET_USER_FULFILLED,
     payload: data,
     loading: false
   };
 };
 
-//Define a action creator that catches a error and sets an errorMessage
 export const fetchDataRejected = error => {
-  //Return a action type and a payload with a error
   return {
-    type: GET_PERSON_REJECTED,
+    type: GET_USER_REJECTED,
     payload: error,
     loading: false
   };
 };
 
-//Export the reducer as a default export
 export default reducer;
